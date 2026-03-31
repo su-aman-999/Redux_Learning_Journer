@@ -1,4 +1,5 @@
 import { createStore } from "redux";
+import { myCreateStore } from "./my-redux";
 const postCountElement = document.querySelector(".post-count");
 
 // let state = {
@@ -39,7 +40,7 @@ const INCREASE_BY = "post/increaseBy";
 const DECREASE_BY = "post/decreasetBy";
 
 function reducer(state = initialState, action) {
-  switch (action.type) {
+  switch (action?.type) {
     case INCREAMENT:
       return { ...state, post: state.post + 1 };
     case DECREAMENT:
@@ -51,10 +52,13 @@ function reducer(state = initialState, action) {
     default:
       return state;
   }
+  return state;
 }
 
 //? __REDUX_DEVTOOLS_EXTENSION__?.() → store enhancer
 const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__?.());
+
+console.log(store);
 
 const unsubscribe = store.subscribe(() => {
   console.log(store.getState());
@@ -85,7 +89,7 @@ postCountElement.addEventListener("click", () => {
 });
 
 //? stop subscribe
-unsubscribe()
+unsubscribe();
 
 //? Why do we say Reducer: It reduce of state + action and create another state
 
@@ -114,3 +118,29 @@ unsubscribe()
 
 // reduxState = reducer(reduxState, { type: "DECREASE_BY, payload: 5 });
 // console.log(reduxState);
+
+console.log("Make Your Own Redux");
+
+//! myCreateStore()
+
+const myStore = myCreateStore(reducer);
+
+console.log(myStore);
+
+const unsubscribe1 = myStore.subscribe(() => {
+  console.log(myStore.getState());
+});
+
+const unsubscribe2 = myStore.subscribe(() => {
+  console.log("Unsubcribe 2");
+});
+
+const unsubscribe3 = myStore.subscribe(() => {
+  console.log("Unsubcribe 3");
+});
+
+myStore.dispatch({ type: INCREAMENT });
+myStore.dispatch({ type: DECREAMENT });
+myStore.dispatch({ type: INCREASE_BY, payload: 10 });
+unsubscribe1();
+myStore.dispatch({ type: DECREASE_BY, payload: 5 });
