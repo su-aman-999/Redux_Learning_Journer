@@ -1,0 +1,10 @@
+{
+  "tasks": [
+    {
+      "value": "amam",
+      "completed": false,
+      "id": "MJp-OEv7EFk"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
